@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HankouApp</string>
+
+    <!--首页-->
+    <string name="home_page">首页</string>
+    <string name="scene">风光</string>
+    <string name="mine">我的</string>
+
+    <string name="request_fail">请求失败</string>
+    <string name="request_success">请求成功</string>
+    <string name="network_error">网络异常</string>
+</resources>
