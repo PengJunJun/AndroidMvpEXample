@@ -10,6 +10,7 @@ public class SearchActivity extends BaseActivity{
 
     @Override
     public void showError(String message) {
-
+        showToast("one commit");
+        showError("two commit");
     }
 }
