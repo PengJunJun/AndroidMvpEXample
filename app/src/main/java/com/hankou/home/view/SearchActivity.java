@@ -8,8 +8,6 @@ import com.hankou.base.BaseActivity;
 
 public class SearchActivity extends BaseActivity{
 
-
-
     @Override
     public void showError(String message) {
 

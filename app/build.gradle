@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 24
@@ -23,6 +25,9 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -78,4 +83,8 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile 'com.android.support:cardview-v7:24.2.0'
     compile 'fm.jiecao:jiecaovideoplayer:4.8.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
