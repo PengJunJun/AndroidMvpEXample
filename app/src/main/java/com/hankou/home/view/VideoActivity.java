@@ -68,16 +68,6 @@ public class VideoActivity extends BaseActivity implements VideoContact.VideoVie
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new TestVideoAdapter(this, getVideoList());
         mRecyclerView.setAdapter(mAdapter);
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.__picker_ic_camera_p);
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-            @Override
-            public void onGenerated(Palette palette) {
-                Palette.Swatch mutedSwatch = palette.getMutedSwatch();
-                if (mutedSwatch != null) {
-                }
-            }
-        });
     }
 
     @Override
