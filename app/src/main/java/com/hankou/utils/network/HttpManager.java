@@ -28,7 +28,11 @@ public class HttpManager {
                 .build();
     }
 
+<<<<<<< HEAD
     public static synchronized HttpManager getInstance() {
+=======
+    public static HttpManager getInstance() {
+>>>>>>> 523709d7b1ab9cb1dce1ab11c6c9dc8908f555bc
         if (mHttpManager == null) {
             mHttpManager = new HttpManager();
         }
