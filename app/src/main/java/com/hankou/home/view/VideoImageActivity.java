@@ -1,6 +1,6 @@
 package com.hankou.home.view;
 
-<<<<<<< HEAD
+import com.hankou.base.BaseActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +15,7 @@ import com.facebook.keyframes.KeyframesDrawable;
 import com.facebook.keyframes.KeyframesDrawableBuilder;
 import com.facebook.keyframes.deserializers.KFImageDeserializer;
 import com.facebook.keyframes.model.KFImage;
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
 import com.hankou.R;
-import com.hankou.base.BaseActivity;
 import com.hankou.home.model.ImageEntity;
 import com.hankou.home.presenter.VideoImageContact;
 import com.hankou.home.presenter.VideoImagePresentImpl;
@@ -41,7 +38,6 @@ public class VideoImageActivity extends BaseActivity implements VideoImageContac
     @Inject
     public VideoImagePresentImpl mPresenter;
 
-<<<<<<< HEAD
     private KFImage mKfImage;
     private KeyframesDrawable mKeyFramesDrawable;
     private final IntentFilter mPreviewKeyframesAnimation = new IntentFilter("PreviewKeyframesAnimation");
@@ -74,8 +70,6 @@ public class VideoImageActivity extends BaseActivity implements VideoImageContac
         }
     };
 
-=======
->>>>>>> 523709d7b1ab9cb1dce1ab11c6c9dc8908f555bc
     @Override
     public int getLayoutResId() {
         return R.layout.activity_video_image;
@@ -170,6 +164,4 @@ public class VideoImageActivity extends BaseActivity implements VideoImageContac
             mKeyFramesDrawable.startAnimation();
         }
     }
-=======
->>>>>>> 523709d7b1ab9cb1dce1ab11c6c9dc8908f555bc
 }
