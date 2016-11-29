@@ -1,6 +1,7 @@
 package com.hankou.base;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewStub;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hankou.R;
@@ -20,6 +22,7 @@ import com.hankou.component.ActivityComponent;
 import com.hankou.component.DaggerActivityComponent;
 import com.hankou.module.ActivityModule;
 import com.hankou.utils.IView;
+import com.hankou.utils.StringUtils;
 import com.hankou.utils.ToastManager;
 import com.hankou.utils.views.SlideView;
 
@@ -37,6 +40,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
     private Toolbar mToolBar;
 
     private TextView mTvTitle;
+
+    private ViewStub mViewStub;
+
+    private ImageView mIvEmptyIcon;
+
+    private TextView mTvEmptyMessage;
 
     private boolean mHideToolbar = false;
 
@@ -91,6 +100,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
                 finish();
             }
         });
+        mViewStub = (ViewStub) mBaseViewLayout.findViewById(R.id.viewStub);
     }
 
     public void hideToolbar() {
@@ -116,6 +126,27 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
     }
 
     public void showEmptyView() {
+        showEmptyView("");
+    }
+
+    public void showEmptyView(String message) {
+        showEmptyView(message, null);
+    }
+
+    public void showEmptyView(Drawable icon) {
+        showEmptyView("", icon);
+    }
+
+    public void showEmptyView(String message, Drawable icon) {
+        View view = mViewStub.inflate();
+        mIvEmptyIcon = (ImageView) view.findViewById(R.id.iv_empty_image);
+        mTvEmptyMessage = (TextView) view.findViewById(R.id.tv_empty_message);
+        if (!StringUtils.isEmpty(message)) {
+            mTvEmptyMessage.setText(message);
+        }
+        if (icon != null) {
+            mIvEmptyIcon.setBackgroundDrawable(icon);
+        }
     }
 
     @Override

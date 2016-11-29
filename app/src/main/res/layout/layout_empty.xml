@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
     android:gravity="center"
-    android:layout_height="44dp">
+    android:orientation="vertical">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
+    <ImageView
+        android:id="@+id/iv_empty_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="正在加载数据.."
-        />
+        android:background="@drawable/ic_bili_logo_2016" />
+
+    <TextView
+        android:id="@+id/tv_empty_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_12dp"
+        android:text="暂时没有数据.."
+        android:textColor="@color/black" />
 
 </LinearLayout>
