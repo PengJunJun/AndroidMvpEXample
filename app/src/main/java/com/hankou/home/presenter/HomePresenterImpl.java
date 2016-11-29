@@ -40,7 +40,7 @@ public class HomePresenterImpl implements HomeContact.IHomePresenter {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        mHomeView.showError("dsfdsfdsfdsfdsfdsfsdf");
+                        mHomeView.showError("服务器已挂,勿念!");
                     }
                 });
     }
