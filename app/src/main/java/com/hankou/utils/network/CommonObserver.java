@@ -30,14 +30,13 @@ public class CommonObserver<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
         Log.i(TAG, e.getMessage());
-        Log.i(TAG, e.toString());
         if (e instanceof HttpException) {
             ToastManager.showToast(Res.getString(R.string.request_fail));
         } else if (e instanceof ApiException) {
             ApiException apiException = (ApiException) e;
             ToastManager.showToast(apiException.getMessage());
         }else if(e instanceof SocketException){
-            //ToastManager.showToast("连接失败");
+            ToastManager.showToast("连接失败");
         }else if(e instanceof TimeoutException){
             ToastManager.showToast("连接超时");
         }else if(e instanceof NetworkErrorException){

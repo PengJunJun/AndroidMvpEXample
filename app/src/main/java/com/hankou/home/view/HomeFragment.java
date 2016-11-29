@@ -15,12 +15,9 @@ import com.hankou.home.presenter.HomePresenterImpl;
 import com.hankou.mine.model.UserEntity;
 import com.hankou.utils.views.AutoRecyclerItemDecoration;
 import com.hankou.utils.views.AutoRecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 
 /**
