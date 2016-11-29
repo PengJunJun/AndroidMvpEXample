@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HankouApp.iml" filepath="$PROJECT_DIR$/HankouApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keyframes/keyframes.iml" filepath="$PROJECT_DIR$/keyframes/keyframes.iml" />
     </modules>
   </component>
 </project>

@@ -80,7 +80,7 @@ public class SlideView extends LinearLayout {
                 mMoveY = ev.getY();
                 if ((mMoveX - mStartX) > mTouchSlop &&
                         (mMoveX - mStartX) > (Math.abs(mMoveY - mStartY)) &&
-                        mStartX <= mScreentWidth / 5) {
+                        mStartX <= mScreentWidth / 6) {
                     isIntercept = true;
                 }
                 break;
@@ -110,7 +110,7 @@ public class SlideView extends LinearLayout {
                 mStartX = mMoveX;
                 break;
             case MotionEvent.ACTION_UP:
-                if (mTotalX >= mScreentWidth / 5) {
+                if (mTotalX >= mScreentWidth / 6) {
                     scrollBy(-(int) (mScreentWidth - mTotalX), 0);
                     if (mStartListener != null) {
                         mStartListener.onFinish();

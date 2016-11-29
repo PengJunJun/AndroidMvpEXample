@@ -36,11 +36,10 @@
     </FrameLayout>
 
     <ViewStub
-        android:id="@+id/viewStub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/viewStub"
         android:layout="@layout/layout_empty"
-        android:inflatedId="@+id/layout_empty_view"
         />
 
 </com.hankou.utils.views.SlideView>

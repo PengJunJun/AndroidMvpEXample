@@ -1,16 +1,23 @@
 package com.hankou.base;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.hankou.R;
 import com.hankou.component.DaggerFragmentComponent;
 import com.hankou.component.FragmentComponent;
 import com.hankou.module.FragmentModule;
 import com.hankou.utils.IView;
+import com.hankou.utils.StringUtils;
 import com.hankou.utils.ToastManager;
 
 import javax.inject.Inject;
@@ -24,10 +31,21 @@ public abstract class BaseFragment extends Fragment implements IView {
 
     public FragmentComponent mFragmentComponent;
 
+    private View mBaseView;
+
+    private FrameLayout mContentLayout;
+
+    private ViewStub mViewStub;
+
+    private ImageView mIvEmptyIcon;
+
+    private TextView mTvEmptyMessage;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initIntentData();
+        initBaseView();
     }
 
     @Nullable
@@ -35,10 +53,10 @@ public abstract class BaseFragment extends Fragment implements IView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getLayoutResId() != -1) {
             View view = inflater.inflate(getLayoutResId(), null);
-            ButterKnife.bind(this, view);
-            return view;
+            mContentLayout.addView(view);
         }
-        return super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, mBaseView);
+        return mBaseView;
     }
 
     @Override
@@ -49,6 +67,12 @@ public abstract class BaseFragment extends Fragment implements IView {
         initViews();
         initListeners();
         loadData();
+    }
+
+    private void initBaseView() {
+        mBaseView = LayoutInflater.from(getActivity()).inflate(R.layout.frag_base, null);
+        mContentLayout = (FrameLayout) mBaseView.findViewById(R.id.layout_content);
+        mViewStub = (ViewStub) mBaseView.findViewById(R.id.viewStub);
     }
 
     private void injectFragment() {
@@ -77,6 +101,30 @@ public abstract class BaseFragment extends Fragment implements IView {
 
     @Override
     public void loadData() {
+    }
+
+    public void showEmptyView() {
+        showEmptyView("");
+    }
+
+    public void showEmptyView(String message) {
+        showEmptyView(message, null);
+    }
+
+    public void showEmptyView(Drawable icon) {
+        showEmptyView("", icon);
+    }
+
+    public void showEmptyView(String message, Drawable icon) {
+        View view = mViewStub.inflate();
+        mIvEmptyIcon = (ImageView) view.findViewById(R.id.iv_empty_image);
+        mTvEmptyMessage = (TextView) view.findViewById(R.id.tv_empty_message);
+        if (!StringUtils.isEmpty(message)) {
+            mTvEmptyMessage.setText(message);
+        }
+        if (icon != null) {
+            mIvEmptyIcon.setBackgroundDrawable(icon);
+        }
     }
 
     @Override
