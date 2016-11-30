@@ -1,5 +1,6 @@
 package com.hankou.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -53,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
 
     private ViewStub mEmptyView;
 
-    private Context mContext;
+    private Activity mContext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +99,11 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
             @Override
             public void onFinish() {
                 finish();
+            }
+
+            @Override
+            public boolean isCancelScroll() {
+                return mContext instanceof MainActivity ? true : false;
             }
         });
         mViewStub = (ViewStub) mBaseViewLayout.findViewById(R.id.viewStub);
