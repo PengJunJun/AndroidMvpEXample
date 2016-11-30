@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        icon="@drawable/bangumi_home_ic_season_1"
+        id="@+id/home"
+        title="首页" />
+    <tab
+        icon="@drawable/bangumi_home_ic_season_2"
+        id="@+id/scene"
+        title="风光" />
+    <tab
+        icon="@drawable/bangumi_home_ic_season_3"
+        id="@+id/mine"
+        title="我的" />
+</tabs>

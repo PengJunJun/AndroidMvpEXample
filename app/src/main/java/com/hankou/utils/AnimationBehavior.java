@@ -26,6 +26,11 @@ public class AnimationBehavior extends CoordinatorLayout.Behavior<FloatingAction
     }
 
     @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
+        return super.layoutDependsOn(parent, child, dependency);
+    }
+
+    @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, FloatingActionButton child,
                                        View directTargetChild, View target, int nestedScrollAxes) {
         return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
