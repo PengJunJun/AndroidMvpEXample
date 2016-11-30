@@ -38,6 +38,8 @@ public class SlideView extends LinearLayout {
 
     private boolean isIntercept;
 
+    private boolean isCancelScroll;
+
     private Scroller mScroller;
 
     public SlideView(Context context) {
@@ -80,7 +82,7 @@ public class SlideView extends LinearLayout {
                 mMoveY = ev.getY();
                 if ((mMoveX - mStartX) > mTouchSlop &&
                         (mMoveX - mStartX) > (Math.abs(mMoveY - mStartY)) &&
-                        mStartX <= mScreentWidth / 10 ) {
+                        mStartX <= mScreentWidth / 5 && !isCancelScroll) {
                     isIntercept = true;
                 }
                 break;
@@ -91,7 +93,7 @@ public class SlideView extends LinearLayout {
                 isIntercept = false;
                 break;
         }
-        if(mContext instanceof MainActivity){
+        if (mContext instanceof MainActivity) {
             isIntercept = false;
         }
         return isIntercept;
@@ -113,7 +115,7 @@ public class SlideView extends LinearLayout {
                 mStartX = mMoveX;
                 break;
             case MotionEvent.ACTION_UP:
-                if (mTotalX >= mScreentWidth / 10) {
+                if (mTotalX >= mScreentWidth / 5) {
                     scrollBy(-(int) (mScreentWidth - mTotalX), 0);
                     if (mStartListener != null) {
                         mStartListener.onFinish();
@@ -141,9 +143,14 @@ public class SlideView extends LinearLayout {
 
     public void setOnFinishListener(OnStartFinishListener listener) {
         this.mStartListener = listener;
+        if (listener != null) {
+            isCancelScroll = listener.isCancelScroll();
+        }
     }
 
     public interface OnStartFinishListener {
         void onFinish();
+
+        boolean isCancelScroll();
     }
 }
