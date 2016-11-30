@@ -61,7 +61,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         mRecyclerView.setOnItemClickListener(new AutoRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
                 startActivity(intent);
             }
         });
