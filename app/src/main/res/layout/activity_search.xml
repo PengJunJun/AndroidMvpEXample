@@ -10,6 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/height_60dp" />
+
     </android.support.v4.widget.NestedScrollView>
 
     <com.roughike.bottombar.BottomBar
@@ -19,6 +25,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         app:bb_behavior="shifting|underNavbar"
-        app:bb_tabXmlResource="@xml/bottombar_tabs_color_changing" />
+        app:bb_tabXmlResource="@xml/bottombar_tabs_color_changing"
+        app:layout_behavior="com.hankou.utils.BottomBarBehavior" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -11,11 +11,6 @@
         id="@+id/scene"
         title="风光" />
     <tab
-        barColorWhenSelected="#7B1FA2"
-        icon="@drawable/ic_favorites"
-        id="@+id/notice"
-        title="消息" />
-    <tab
         barColorWhenSelected="#303F9F"
         icon="@drawable/ic_friends"
         id="@+id/mine"
