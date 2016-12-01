@@ -1,8 +1,23 @@
 package com.hankou.home.view;
 
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
+
 import com.hankou.R;
+import com.hankou.adapter.ViewPagerAdapter;
 import com.hankou.base.BaseActivity;
+import com.hankou.home.presenter.HomeContact;
+import com.hankou.home.presenter.HomePresenterImpl;
+import com.hankou.mine.model.UserEntity;
+import com.hankou.mine.view.MineFragment;
+import com.hankou.scene.view.SceneFragment;
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -15,6 +30,12 @@ public class SearchActivity extends BaseActivity {
     @BindView(R.id.bottomBar)
     public BottomBar mBottomBar;
 
+    private HomeFragment mHomeFragment;
+
+    private SceneFragment mSceneFragment;
+
+    private MineFragment mMineFragment;
+
     @Override
     public int getLayoutResId() {
         return R.layout.activity_search;
@@ -23,6 +44,57 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void initViews() {
         setTitle("搜索");
+        hideToolbarBackIcon();
+        initFragment();
+    }
+
+    @Override
+    public void initListeners() {
+        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.home:
+                        showFragment(0);
+                        break;
+                    case R.id.scene:
+                        showFragment(1);
+                        break;
+                    case R.id.mine:
+                        showFragment(2);
+                        break;
+                }
+            }
+        });
+    }
+
+    private void initFragment() {
+        mHomeFragment = new HomeFragment();
+        mSceneFragment = new SceneFragment();
+        mMineFragment = new MineFragment();
+
+        getSupportFragmentManager().beginTransaction().
+                add(R.id.container, mHomeFragment, "home").
+                add(R.id.container, mSceneFragment, "scene").
+                add(R.id.container, mMineFragment, "mine").
+                commitAllowingStateLoss();
+    }
+
+    private void showFragment(int index) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.hide(mHomeFragment).hide(mSceneFragment).hide(mMineFragment);
+        switch (index) {
+            case 0:
+                transaction.show(mHomeFragment);
+                break;
+            case 1:
+                transaction.show(mSceneFragment);
+                break;
+            case 2:
+                transaction.show(mMineFragment);
+                break;
+        }
+        transaction.commitAllowingStateLoss();
     }
 
     @Override

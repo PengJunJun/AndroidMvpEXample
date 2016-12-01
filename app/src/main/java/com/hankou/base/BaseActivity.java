@@ -127,8 +127,16 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
         mToolBar.setNavigationIcon(null);
     }
 
+    public void setToolbarBackIcon(Drawable drawable) {
+        if (drawable != null) {
+            mToolBar.setNavigationIcon(drawable);
+        } else {
+            mToolBar.setNavigationIcon(R.drawable.actionbar_back);
+        }
+    }
+
     public void showToolbarBackIcon() {
-        mToolBar.setNavigationIcon(R.drawable.actionbar_back);
+        setToolbarBackIcon(null);
     }
 
     public void showEmptyView() {
