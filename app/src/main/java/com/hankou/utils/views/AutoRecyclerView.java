@@ -189,11 +189,11 @@ public class AutoRecyclerView extends RecyclerView {
 
     public void onLoadComplete(boolean isLastPager) {
         if (isLastPager) {
-            if (mIsNeedLoadMore == true)
+            if (mIsNeedLoadMore)
                 mIsNeedLoadMore = false;
             removeFooterView();
         } else {
-            if (mIsNeedLoadMore == false)
+            if (!mIsNeedLoadMore)
                 mIsNeedLoadMore = true;
             initFooterView(mContext);
             addFooterView(mFootView);
@@ -204,14 +204,7 @@ public class AutoRecyclerView extends RecyclerView {
     }
 
     public void onLoadComplete() {
-        if (mIsNeedLoadMore == true)
-            mIsNeedLoadMore = false;
-        if (mFootView != null) {
-            removeFooterView();
-        }
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
+        onLoadComplete(true);
     }
 
     public void setOnLoadMoreListener(OnLoadMoreListener loadMoreListener) {
