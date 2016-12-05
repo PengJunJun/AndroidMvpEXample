@@ -16,6 +16,7 @@ import com.hankou.adapter.ViewPagerAdapter;
 import com.hankou.base.BaseActivity;
 import com.hankou.common.presenter.MainContract;
 import com.hankou.home.view.HomeFragment;
+import com.hankou.home.view.TestFragment;
 import com.hankou.mine.view.MineFragment;
 import com.hankou.scene.view.SceneFragment;
 import com.hankou.utils.DialogUtils;
