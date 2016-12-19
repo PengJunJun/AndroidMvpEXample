@@ -40,6 +40,11 @@ public class HomePagerAdapter extends RecyclerView.Adapter<HomePagerAdapter.Hold
         notifyDataSetChanged();
     }
 
+    public void addData(List<UserEntity> list){
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new Holder(mInflater.inflate(R.layout.item_home_pager, parent,false));

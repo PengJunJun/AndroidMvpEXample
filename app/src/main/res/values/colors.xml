@@ -10,4 +10,6 @@
     <color name="bgColor">#f8f8f8</color>
     <color name="green">#00BFFF</color>
 
+    <color name="transparent">#00000000</color>
+
 </resources>

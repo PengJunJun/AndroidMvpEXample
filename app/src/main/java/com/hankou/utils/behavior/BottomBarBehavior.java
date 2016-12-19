@@ -1,4 +1,4 @@
-package com.hankou.utils;
+package com.hankou.utils.behavior;
 
 import android.content.Context;
 import android.content.pm.ProviderInfo;
@@ -16,6 +16,11 @@ import com.roughike.bottombar.BottomBar;
 
 /**
  * Created by pjj on 2016/11/18.
+ * <p>
+ * 自定义的Behavior,
+ * child  使用了当前Behavior的控件(此处就是BottomBar),
+ * dependency child需要监听的view,以便child随着view嵌套滑动.
+ * </p>
  */
 
 public class BottomBarBehavior extends CoordinatorLayout.Behavior<BottomBar> {
@@ -24,6 +29,11 @@ public class BottomBarBehavior extends CoordinatorLayout.Behavior<BottomBar> {
 
     public BottomBarBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, BottomBar child, View dependency) {
+        return dependency instanceof AutoRecyclerView;
     }
 
     @Override

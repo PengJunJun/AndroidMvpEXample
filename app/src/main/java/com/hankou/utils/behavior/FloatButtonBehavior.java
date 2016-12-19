@@ -1,4 +1,4 @@
-package com.hankou.utils;
+package com.hankou.utils.behavior;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
@@ -35,11 +35,6 @@ public class FloatButtonBehavior extends CoordinatorLayout.Behavior<FloatingActi
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
-        return dependency instanceof AutoRecyclerView;
-    }
-
-    @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child, View dependency) {
         return dependency instanceof AutoRecyclerView;
     }
 

@@ -1,4 +1,4 @@
-package com.hankou.utils;
+package com.hankou.utils.behavior;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

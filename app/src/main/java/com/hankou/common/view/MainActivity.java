@@ -1,9 +1,14 @@
 package com.hankou.common.view;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,9 +25,18 @@ import com.hankou.home.view.TestFragment;
 import com.hankou.mine.view.MineFragment;
 import com.hankou.scene.view.SceneFragment;
 import com.hankou.utils.DialogUtils;
+import com.hankou.utils.ListUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import butterknife.BindView;
@@ -82,7 +96,7 @@ public class MainActivity extends BaseActivity implements MainContract.IMainView
         mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.action_search:
                         DialogUtils.showBottomSheetDialog(MainActivity.this);
                         break;
@@ -97,6 +111,16 @@ public class MainActivity extends BaseActivity implements MainContract.IMainView
         mTabLayout.addTab(mTabLayout.newTab(), 1);
         mTabLayout.addTab(mTabLayout.newTab(), 2);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void loadData() {
+        new Thread() {
+            @Override
+            public void run() {
+                testNIO();
+            }
+        }.start();
     }
 
     @Override
@@ -180,7 +204,78 @@ public class MainActivity extends BaseActivity implements MainContract.IMainView
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar,menu);
+        getMenuInflater().inflate(R.menu.menu_toolbar, menu);
         return true;
+    }
+
+    private void testIO() {
+        long start = System.currentTimeMillis();
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image.jpg";
+        String outPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "text.jpg";
+        File out = new File(outPath);
+        if (!out.exists()) {
+            try {
+                out.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        try {
+            fis = new FileInputStream(new File(filePath));
+            fos = new FileOutputStream(new File(outPath));
+            byte[] b = new byte[1024 * 8];
+
+            while ((fis.read(b)) != -1) {
+                fos.write(b, 0, b.length);
+                fos.flush();
+            }
+            Log.e("IO", "间隔1:" + (System.currentTimeMillis() - start));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+        }
+    }
+
+    private void testNIO() {
+        long start = System.currentTimeMillis();
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "image.jpg";
+        String outPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "nio.jpg";
+        File out = new File(outPath);
+        if (!out.exists()) {
+            try {
+                out.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        FileInputStream fis = null;
+        FileOutputStream fos = null;
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+        try {
+            fis = new FileInputStream(new File(filePath));
+            inChannel = fis.getChannel();
+            fos = new FileOutputStream(new File(outPath));
+            outChannel = fos.getChannel();
+
+            ByteBuffer byteBuffer = ByteBuffer.allocate(1024 * 8);
+
+            while ((inChannel.read(byteBuffer)) != -1) {
+                inChannel.read(byteBuffer);
+                byteBuffer.flip();
+                outChannel.write(byteBuffer);
+                byteBuffer.clear();
+            }
+            Log.e("IO", "间隔2:" + (System.currentTimeMillis() - start));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+        }
     }
 }
