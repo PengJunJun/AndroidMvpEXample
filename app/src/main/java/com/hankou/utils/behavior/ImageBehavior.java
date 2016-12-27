@@ -29,6 +29,8 @@ public class ImageBehavior extends CoordinatorLayout.Behavior<View> {
 
     private boolean mIsShow = true;
 
+    private AutoRecyclerView mDependencyView;
+
     public ImageBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
         mScroller = new Scroller(context);
@@ -39,12 +41,20 @@ public class ImageBehavior extends CoordinatorLayout.Behavior<View> {
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
         mChildHeight = child.getMeasuredHeight();
         mChild = child;
+        if (dependency instanceof AutoRecyclerView) {
+            mDependencyView = (AutoRecyclerView) dependency;
+        }
         return dependency instanceof AutoRecyclerView;
     }
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
         return super.onDependentViewChanged(parent, child, dependency);
+    }
+
+    @Override
+    public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+        return super.onLayoutChild(parent, child, layoutDirection);
     }
 
     @Override
@@ -105,9 +115,11 @@ public class ImageBehavior extends CoordinatorLayout.Behavior<View> {
         public void run() {
             if (mScroller.computeScrollOffset()) {
                 mChild.setTranslationY(mScroller.getCurrY());
+                if(mDependencyView != null){
+                    mDependencyView.setTranslationY(mScroller.getCurrY());
+                }
                 mHandler.post(this);
                 mIsShow = (!mIsShow);
-                Log.i(TAG, "Run():" + mChild.getTranslationY());
             }
         }
     };

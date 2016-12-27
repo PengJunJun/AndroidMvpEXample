@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -52,4 +53,13 @@ public interface UserApi {
 
     @GET("/video/image")
     Observable<CommonEntity<ImageEntity>> getVideoImage();
+
+    @POST("app/notice/{uid}/update/state")
+    Observable<CommonEntity<Object>> testNotice(@Path("uid") String uid, @Body Map<String, Object> params);
+
+    @HTTP(method = "DELETE", path = "app/tribe/photo-album", hasBody = true)
+    Observable<CommonEntity<Object>> deletePhoto( @Body Map<String, Object> params);
+
+    @HTTP(method = "DELETE", path = "app/comment", hasBody = true)
+    Observable<CommonEntity<Object>> deleteComment( @Body Map<String, Object> params);
 }

@@ -56,8 +56,6 @@ public class TestActivity extends BaseActivity {
         mRecyclerView.setHasFixedSize(true);
         mAdapter = new HomePagerAdapter(this, new ArrayList<UserEntity>());
         mRecyclerView.setAdapter(mAdapter);
-
-        mRecyclerView.setTranslationY(300.0f);
     }
 
     @Override

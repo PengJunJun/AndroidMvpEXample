@@ -7,6 +7,7 @@ import com.hankou.utils.HttpUtil;
 import com.hankou.utils.network.CommonObserver;
 import com.hankou.utils.network.HttpManager;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**

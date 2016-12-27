@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.hankou.R;
@@ -21,6 +22,7 @@ import com.hankou.utils.views.AutoRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Inject;
 
