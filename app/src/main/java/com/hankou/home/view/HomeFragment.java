@@ -1,16 +1,9 @@
 package com.hankou.home.view;
 
 import android.content.Intent;
-import android.os.Environment;
-import android.os.RemoteException;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.hankou.R;
 import com.hankou.adapter.HomePagerAdapter;
 import com.hankou.base.BaseFragment;
@@ -19,13 +12,9 @@ import com.hankou.home.presenter.HomePresenterImpl;
 import com.hankou.mine.model.UserEntity;
 import com.hankou.utils.views.AutoRecyclerItemDecoration;
 import com.hankou.utils.views.AutoRecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 
 /**

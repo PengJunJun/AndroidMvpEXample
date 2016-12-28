@@ -1,24 +1,13 @@
 package com.hankou.home.view;
 
 import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.NestedScrollView;
-
 import com.hankou.R;
-import com.hankou.adapter.ViewPagerAdapter;
 import com.hankou.base.BaseActivity;
-import com.hankou.home.presenter.HomeContact;
-import com.hankou.home.presenter.HomePresenterImpl;
-import com.hankou.mine.model.UserEntity;
 import com.hankou.mine.view.MineFragment;
 import com.hankou.scene.view.SceneFragment;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 
 /**
