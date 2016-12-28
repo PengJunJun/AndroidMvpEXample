@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Scroller;
 
-import com.hankou.utils.views.AutoRecyclerView;
-
 /**
  * Created by bykj003 on 2016/12/15.
  */
@@ -28,11 +26,7 @@ public class RecyclerViewBehavior extends CoordinatorLayout.Behavior<View> {
 
     private int mDependencyHeight;
 
-    private STATE mState = STATE.NONE;
-
-    public enum STATE {
-        TOP, BOTTOM, NONE
-    }
+    private boolean isScrolling = false;
 
     public RecyclerViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -73,9 +67,9 @@ public class RecyclerViewBehavior extends CoordinatorLayout.Behavior<View> {
         }
         float newTranslationY = (mDependencyView.getTranslationY() - dy);
         if (newTranslationY >= -mDependencyHeight) {
-            mState = STATE.TOP;
             mDependencyView.setTranslationY(newTranslationY);
             consumed[1] = dy;
+            isScrolling = false;
         }
     }
 
@@ -88,43 +82,41 @@ public class RecyclerViewBehavior extends CoordinatorLayout.Behavior<View> {
         }
         float newTranslationY = mDependencyView.getTranslationY() - dyUnconsumed;
         if (newTranslationY <= 0) {
-            mState = STATE.BOTTOM;
             mDependencyView.setTranslationY(newTranslationY);
+            isScrolling = true;
         }
     }
 
     @Override
     public boolean onNestedFling(CoordinatorLayout coordinatorLayout, View child, View target, float velocityX, float velocityY, boolean consumed) {
-        Log.i(TAG, "onNestedFling()" + "State:" + mState);
-        scrollToTarget();
+        scrollToPosition();
         return super.onNestedFling(coordinatorLayout, child, target, velocityX, velocityY, consumed);
     }
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target) {
         super.onStopNestedScroll(coordinatorLayout, child, target);
-        Log.i(TAG, "onStopNestedScroll()" + "State:" + mState);
-        scrollToTarget();
+        scrollToPosition();
     }
 
-    private void scrollToTarget() {
-        mHandler.removeCallbacks(runnable);
+    private void scrollToPosition() {
+        int translationY = (int) mDependencyView.getTranslationY();
         int dy = 0;
-        if (mState == STATE.TOP) {
-            dy = (-mDependencyHeight - (int) mDependencyView.getTranslationY());
-        } else if (mState == STATE.BOTTOM) {
-            dy = (int) (-mDependencyView.getTranslationY());
-        } else {
+        if (translationY == (-mDependencyHeight)) {
             return;
         }
-        mScroller.startScroll(0, (int) mDependencyView.getTranslationY(), 0, dy);
+        if (!isScrolling) {
+            dy = -(mDependencyHeight + translationY);
+        } else {
+            dy = (-translationY);
+        }
+        mScroller.startScroll(0, (int) mDependencyView.getTranslationY(), 0, dy, 500);
         mHandler.post(runnable);
     }
 
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            mState = STATE.NONE;
             if (mScroller.computeScrollOffset()) {
                 mDependencyView.setTranslationY(mScroller.getCurrY());
                 mHandler.post(this);

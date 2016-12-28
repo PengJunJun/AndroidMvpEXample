@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "hankou.com.hankouapp"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -80,6 +80,7 @@ dependencies {
     compile project(path: ':keyframes')
     compile 'com.roughike:bottom-bar:2.0.2'
     compile files('libs/dl-lib.jar')
+    compile 'com.google.vr:sdk-panowidget:1.10.0'
 }
 repositories {
     mavenCentral()
