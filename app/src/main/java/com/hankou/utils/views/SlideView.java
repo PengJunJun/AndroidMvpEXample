@@ -1,6 +1,9 @@
 package com.hankou.utils.views;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -37,6 +40,8 @@ public class SlideView extends LinearLayout {
     private float mTotalX;
 
     private boolean isIntercept;
+
+    private boolean isCancelScroll;
 
     private Scroller mScroller;
 
@@ -80,7 +85,7 @@ public class SlideView extends LinearLayout {
                 mMoveY = ev.getY();
                 if ((mMoveX - mStartX) > mTouchSlop &&
                         (mMoveX - mStartX) > (Math.abs(mMoveY - mStartY)) &&
-                        mStartX <= mScreentWidth / 5) {
+                        mStartX <= mScreentWidth / 5 && !isCancelScroll) {
                     isIntercept = true;
                 }
                 break;
@@ -90,6 +95,9 @@ public class SlideView extends LinearLayout {
             case MotionEvent.ACTION_CANCEL:
                 isIntercept = false;
                 break;
+        }
+        if (mContext instanceof MainActivity) {
+            isIntercept = false;
         }
         return isIntercept;
     }
@@ -116,7 +124,7 @@ public class SlideView extends LinearLayout {
                         mStartListener.onFinish();
                     }
                 } else {
-                    mScroller.startScroll(0, (int)mTotalX, 0, 0);
+                    mScroller.startScroll(0, (int) mTotalX, 0, 0);
                     invalidate();
                 }
                 initSlideParam();
@@ -138,9 +146,14 @@ public class SlideView extends LinearLayout {
 
     public void setOnFinishListener(OnStartFinishListener listener) {
         this.mStartListener = listener;
+        if (listener != null) {
+            isCancelScroll = listener.isCancelScroll();
+        }
     }
 
     public interface OnStartFinishListener {
         void onFinish();
+
+        boolean isCancelScroll();
     }
 }

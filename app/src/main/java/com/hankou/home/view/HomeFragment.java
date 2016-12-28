@@ -3,12 +3,7 @@ package com.hankou.home.view;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
-<<<<<<< HEAD
-=======
-
->>>>>>> 55b901b... test first commit
 import com.hankou.R;
 import com.hankou.adapter.HomePagerAdapter;
 import com.hankou.base.BaseFragment;
@@ -17,12 +12,9 @@ import com.hankou.home.presenter.HomePresenterImpl;
 import com.hankou.mine.model.UserEntity;
 import com.hankou.utils.views.AutoRecyclerItemDecoration;
 import com.hankou.utils.views.AutoRecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 
 /**
@@ -66,7 +58,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
         mRecyclerView.setOnItemClickListener(new AutoRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), VideoActivity.class);
+                Intent intent = new Intent(getActivity(), VRTestActivity.class);
                 startActivity(intent);
             }
         });
@@ -86,6 +78,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void showError(String msg) {
         showToast(msg);
+        showEmptyView();
     }
 
     @Override

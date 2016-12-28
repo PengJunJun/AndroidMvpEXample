@@ -7,6 +7,7 @@ import com.hankou.utils.HttpUtil;
 import com.hankou.utils.network.CommonObserver;
 import com.hankou.utils.network.HttpManager;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class HomePresenterImpl implements HomeContact.IHomePresenter {
                     @Override
                     public void onError(Throwable e) {
                         super.onError(e);
-                        mHomeView.showError("dsfdsfdsfdsfdsfdsfsdf");
+                        mHomeView.showError("服务器已挂,勿念!");
                     }
                 });
     }
