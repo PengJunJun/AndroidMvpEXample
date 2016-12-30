@@ -9,4 +9,6 @@
     <string name="request_fail">请求失败</string>
     <string name="request_success">请求成功</string>
     <string name="network_error">网络异常</string>
+
+    <string name="transition_name">过度</string>
 </resources>

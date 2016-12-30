@@ -84,7 +84,12 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".home.view.VRTestActivity"
+            android:name=".home.view.ScrollImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".home.view.ScrollTestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
