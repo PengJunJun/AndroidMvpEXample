@@ -197,4 +197,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IView, B
     @Override
     public void initJect() {
     }
+
+    @Override
+    public void showError(String message) {
+
+    }
 }

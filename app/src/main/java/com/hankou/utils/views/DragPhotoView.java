@@ -60,8 +60,6 @@ public class DragPhotoView extends ImageView implements NestedScrollingChild {
             case MotionEvent.ACTION_MOVE:
                 mMoveX = event.getX() - mDownX;
                 mMoveY = event.getY() - mDownY;
-                mDownX = event.getX();
-                mDownY = event.getY();
                 event.offsetLocation(location[0], location[1]);
                 if (dispatchOnNestPreScroll((int) mMoveX, (int) mMoveY, consumed, location)) {
                     mMoveX -= consumed[0];
