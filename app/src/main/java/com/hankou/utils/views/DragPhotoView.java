@@ -5,6 +5,7 @@ import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
@@ -60,6 +61,8 @@ public class DragPhotoView extends ImageView implements NestedScrollingChild {
             case MotionEvent.ACTION_MOVE:
                 mMoveX = event.getX() - mDownX;
                 mMoveY = event.getY() - mDownY;
+                //mDownX = event.getX();
+                //mDownY = event.getY();
                 event.offsetLocation(location[0], location[1]);
                 if (dispatchOnNestPreScroll((int) mMoveX, (int) mMoveY, consumed, location)) {
                     mMoveX -= consumed[0];
@@ -68,12 +71,10 @@ public class DragPhotoView extends ImageView implements NestedScrollingChild {
                     offsets[0] += location[0];
                     offsets[1] += location[1];
                 }
-                mTotalMoveX += mMoveX;
-                mTotalMoveY += mMoveY;
-                if (mTotalMoveY > 0) {
-                    offsetTopAndBottom((int) (mMoveY));
-                    offsetLeftAndRight((int) (mMoveX));
-                }
+                //mTotalMoveX += mMoveX;
+                //mTotalMoveY += mMoveY;
+                offsetLeftAndRight((int) (mMoveX));
+                offsetTopAndBottom((int) (mMoveY));
                 break;
             case MotionEvent.ACTION_UP:
                 handlerUpEvent();

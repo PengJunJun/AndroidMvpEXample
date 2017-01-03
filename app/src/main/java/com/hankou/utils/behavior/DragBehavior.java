@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 
@@ -58,41 +59,27 @@ public class DragBehavior extends CoordinatorLayout.Behavior {
 
     @Override
     public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, View child, View target, int dx, int dy, int[] consumed) {
-        super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed);
-        if (mTotalMoveY < 0 && dy < 0) {
-            return;
-        }
         mTotalMoveX += dx;
         mTotalMoveY += dy;
         mCurrAlpha = (float) mTotalMoveY / (float) (mDependencyHeight);
-        child.setAlpha(1 - (Math.abs(mCurrAlpha)));
+        child.setAlpha(1 - (Math.min(1, Math.abs(mCurrAlpha))));
     }
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, View child, View target) {
-        super.onStopNestedScroll(coordinatorLayout, child, target);
-        int minCompare = Math.min(mDependencyHeight, mDependencyWidth) / 2;
-        if (Math.abs(mTotalMoveX) >= minCompare || Math.abs(mTotalMoveY) >= minCompare) {
+        int minCompare = Math.min(mDependencyHeight, mDependencyWidth) * 2 / 3;
+        if (Math.abs(mTotalMoveY) >= minCompare) {
             mDependencyView.onMoveOut();
         } else {
-            if (mTotalMoveY > 0) {
-                mDependencyView.offsetTopAndBottom(-mTotalMoveY);
-                mDependencyView.offsetLeftAndRight(-mTotalMoveX);
-                //dependencyTranslationAnimation(mDependencyView, 0, mTotalMoveX, 0, mTotalMoveY);
-                //childAlphaAnimation(child, mCurrAlpha);
-                child.setAlpha(1);
-                mTotalMoveY = 0;
-                mTotalMoveX = 0;
-            }
+            mDependencyView.offsetLeftAndRight(-mTotalMoveX);
+            mDependencyView.offsetTopAndBottom(-mTotalMoveY);
+            child.setAlpha(1);
         }
+        mTotalMoveY = 0;
+        mTotalMoveX = 0;
     }
 
     private void dependencyTranslationAnimation(View view, int fromX, int toX, int fromY, int toY) {
-        //ObjectAnimator xAnimation = ObjectAnimator.ofFloat(view, View.TRANSLATION_X, fromX, toX);
-        //ObjectAnimator yAnimation = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, fromY, toY);
-        //AnimatorSet animatorSet = new AnimatorSet();
-        //animatorSet.playTogether(xAnimation, yAnimation);
-        //animatorSet.start();
         TranslateAnimation animation = new TranslateAnimation(fromX, toX, fromY, toY);
         animation.setDuration(100);
         view.startAnimation(animation);
