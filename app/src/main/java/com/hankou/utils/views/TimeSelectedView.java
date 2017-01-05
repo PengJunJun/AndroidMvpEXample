@@ -3,13 +3,16 @@ package com.hankou.utils.views;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,15 +32,17 @@ public class TimeSelectedView extends ScrollView {
     private static final String TAG = "TimeSelectedView";
     private Context mContext;
     private ItemInfo mCurrItem;
+    private int mCurrPosition;
     private List<ItemInfo> mItemInfoList;
     private LayoutInflater mLayoutInflater;
     private int mTouchSlop;
     private TimeLinearLayout mParentContainer;
-    private int mChildItemHeight;
 
-    private float mDownY;
-    private float mMoveY;
-    private float mTotalMoveY;
+    private int mDownY;
+    private int mMoveY;
+    private int mTotalMoveY;
+    private int mPreTotalMoveY;
+    private int mOneTouchMoveY;
 
     public TimeSelectedView(Context context) {
         this(context, null);
@@ -76,6 +81,12 @@ public class TimeSelectedView extends ScrollView {
     }
 
     @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        super.onLayout(changed, l, t, r, b);
+        mTotalMoveY = mParentContainer.getChildHeight() / 2;
+    }
+
+    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             requestDisallowInterceptTouchEvent(true);
@@ -88,24 +99,63 @@ public class TimeSelectedView extends ScrollView {
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mDownY = event.getY();
+                mDownY = (int) event.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 handlerMoveEvent(event);
                 break;
             case MotionEvent.ACTION_UP:
+                handlerUpEvent();
                 mDownY = 0;
                 mMoveY = 0;
+                mOneTouchMoveY = 0;
                 break;
         }
         return true;
     }
 
     private void handlerMoveEvent(MotionEvent event) {
-        mMoveY = event.getY();
+        mMoveY = (int) event.getY();
         mTotalMoveY += (mMoveY - mDownY);
-        smallScrollToDistance(-(int) (mMoveY - mDownY));
+        mOneTouchMoveY = mTotalMoveY;
+        smallScrollToDistance(-(mMoveY - mDownY));
         mDownY = mMoveY;
+
+        showCenterItem();
+    }
+
+    /**
+     * 每当滑动距离等于Item的高度时，
+     */
+    private void showCenterItem() {
+
+        if ((mTotalMoveY - mPreTotalMoveY) <= -mParentContainer.getChildHeight()) {
+            onItemChange(mCurrPosition, mCurrPosition + 1);
+            mCurrPosition += 1;
+            mPreTotalMoveY = mTotalMoveY;
+        }
+
+        if ((mTotalMoveY - mPreTotalMoveY) >= mParentContainer.getChildHeight()) {
+            onItemChange(mCurrPosition, mCurrPosition - 1);
+            mCurrPosition -= 1;
+            mPreTotalMoveY = mTotalMoveY;
+        }
+    }
+
+    private void handlerUpEvent() {
+        int dis = 0;
+        float pos = ((float) Math.abs(mOneTouchMoveY) / (float) mParentContainer.getChildHeight());
+        int intPos = (int) pos;
+
+        if (pos > (intPos + 0.5)) {
+            intPos += 1;
+            dis = (intPos * mParentContainer.getChildHeight() - mParentContainer.getChildHeight() / 2 + mOneTouchMoveY);
+        } else {
+            dis = ((mOneTouchMoveY + intPos * mParentContainer.getChildHeight()) - mParentContainer.getChildHeight() / 2);
+        }
+        smallScrollToDistance(dis);
+        mTotalMoveY += (-dis);
+        showCenterItem();
     }
 
     public void addItem(String data) {
@@ -126,7 +176,7 @@ public class TimeSelectedView extends ScrollView {
             mItemInfoList.add(itemInfo);
             if (n == 0) {
                 mCurrItem = itemInfo;
-                startScaleAnimation(itemInfo.view);
+                //startScaleAnimation(itemInfo.view);
             }
         }
         requestDisplayItems();
@@ -137,7 +187,6 @@ public class TimeSelectedView extends ScrollView {
             ItemInfo itemInfo = mItemInfoList.get(n);
             mParentContainer.addView(itemInfo.view, itemInfo.position);
         }
-        mChildItemHeight = mItemInfoList.get(0).view.getMeasuredHeight();
     }
 
     public void scrollToPosition(int position) {
@@ -152,6 +201,12 @@ public class TimeSelectedView extends ScrollView {
     }
 
     private void onItemChange(int oldPosition, int newPosition) {
+        if (oldPosition >= mItemInfoList.size() ||
+                newPosition >= mItemInfoList.size() ||
+                oldPosition < 0 ||
+                newPosition < 0) {
+            return;
+        }
         ItemInfo oldItemInfo = mItemInfoList.get(oldPosition);
         ItemInfo newItemInfo = mItemInfoList.get(newPosition);
 
@@ -206,22 +261,24 @@ public class TimeSelectedView extends ScrollView {
     }
 
     private void startScaleAnimation(View view) {
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 0.0f, 1.5f);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 0.0f, 1.5f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.0f, 1.5f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.0f, 1.5f);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX);
         set.playTogether(animatorY);
+        set.setDuration(400);
         set.start();
     }
 
     private void endScaleAnimation(View view) {
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.5f, 0.0f);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.5f, 0.0f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, View.SCALE_X, 1.5f, 1.0f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, View.SCALE_Y, 1.5f, 1.0f);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animatorX);
         set.playTogether(animatorY);
+        set.setDuration(400);
         set.start();
     }
 
@@ -237,6 +294,10 @@ public class TimeSelectedView extends ScrollView {
             this.view = view;
             mTvName = (TextView) view.findViewById(R.id.textView);
             mTvName.setText(data);
+        }
+
+        public void setTextColor(int color) {
+            mTvName.setTextColor(color);
         }
     }
 }

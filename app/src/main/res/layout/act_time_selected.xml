@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -8,9 +8,16 @@
     <com.hankou.utils.views.TimeSelectedView
         android:id="@+id/timeSelectedView"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_height="@dimen/height_200dp">
+        android:layout_height="@dimen/height_200dp"
+        android:background="@color/colorPrimary">
 
     </com.hankou.utils.views.TimeSelectedView>
 
-</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_1dp"
+        android:layout_marginTop="78dp"
+        android:background="@color/colorAccent"
+        />
+
+</FrameLayout>
