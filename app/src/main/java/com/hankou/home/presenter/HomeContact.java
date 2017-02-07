@@ -4,6 +4,7 @@ import com.hankou.base.BasePresenter;
 import com.hankou.base.BaseView;
 import com.hankou.home.model.HomeEntity;
 import com.hankou.mine.model.UserEntity;
+import com.hankou.utils.network.api.UserApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,5 +20,6 @@ public interface HomeContact {
 
     interface IHomePresenter extends BasePresenter<IHomeView> {
         void getData();
+        void attachResponsibility(UserApi userApi);
     }
 }

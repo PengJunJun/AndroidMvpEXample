@@ -16,7 +16,7 @@ public class HttpManager {
     private Retrofit mRetrofit;
     private OkHttpClient mOkHttpClient = new OkHttpClient();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
-    private static final String HOST_URL = "http://192.168.1.73:8080";
+    private static final String HOST_URL = "http://192.168.1.51:8080";
     private UserApi mUserApi;
 
     private HttpManager() {

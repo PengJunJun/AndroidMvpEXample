@@ -7,19 +7,25 @@ import com.hankou.mine.model.UserEntity;
 import com.hankou.utils.RxUnitTestTools;
 import com.hankou.utils.network.HttpManager;
 import com.hankou.utils.network.api.UserApi;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import rx.Observable;
 import rx.Observer;
+import rx.observers.Observers;
 import rx.observers.TestSubscriber;
 
 /**
@@ -31,43 +37,35 @@ import rx.observers.TestSubscriber;
 public class HomePresenterTest {
 
     @Mock
-    public HomeContact.IHomeView mUserDetailView;
-
+    public HomeContact.IHomeView mHomeView;
     private HomePresenterImpl mHomePresenter;
-    public UserApi mResponsibility;
-    private static final int TEST_UID = 1;
+
+    @Mock
+    private UserApi mUserResponsibility;
+
+    private CommonEntity<List<UserEntity>> mUserData;
+
+    @Captor
+    private ArgumentCaptor<CommonEntity<List<UserEntity>>> mArgumentCaptor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         RxUnitTestTools.openRxTools();
-        mHomePresenter = new HomePresenterImpl();
-        mHomePresenter.attachView(mUserDetailView);
-        mResponsibility = HttpManager.getInstance().getUserApi();
+
+        mHomePresenter = new HomePresenterImpl(mHomeView,mUserResponsibility);
+        List<UserEntity> userList = Arrays.asList(new UserEntity(1, "peng", "jun", "jun"),
+                new UserEntity(2, "peng11111", "jun11111", "jun11111"));
+        mUserData = new CommonEntity<>();
+        mUserData.data = userList;
+        mUserData.status = true;
     }
 
     @Test
     public void testGatAllUser() {
+        Mockito.when(mUserResponsibility.getAllUser()).thenReturn(Observable.just(mUserData));
         mHomePresenter.getData();
-        TestSubscriber<CommonEntity<List<UserEntity>>> testSubscriber = new TestSubscriber<>();
-        Assert.assertNotNull("Responsibility Is Null", mResponsibility);
-        mResponsibility.getAllUser().subscribe(testSubscriber);
-
-        Mockito.verify(mUserDetailView).showSuccess(Mockito.anyList());
-    }
-
-    @Test
-    public void testErrorGatAllUser() {
-        mHomePresenter.getData();
-        TestSubscriber<CommonEntity<List<UserEntity>>> testSubscriber = new TestSubscriber<>();
-        testSubscriber.assertError(new TimeoutException());
-        Assert.assertNotNull("Responsibility Is Null", mResponsibility);
-        mResponsibility.getAllUser().subscribe(testSubscriber);
-
-        Mockito.verify(mUserDetailView).showError(Mockito.anyString());
-    }
-
-    @Test
-    public void testDeleteUser(){
+        Mockito.verify(mUserResponsibility).getAllUser();
+        Mockito.verify(mHomeView).showSuccess(mUserData.data);
     }
 }

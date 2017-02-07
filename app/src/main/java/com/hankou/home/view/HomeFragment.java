@@ -1,19 +1,25 @@
 package com.hankou.home.view;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
+import com.google.common.collect.LinkedListMultimap;
 import com.hankou.R;
 import com.hankou.adapter.HomePagerAdapter;
 import com.hankou.base.BaseFragment;
 import com.hankou.home.presenter.HomeContact;
 import com.hankou.home.presenter.HomePresenterImpl;
 import com.hankou.mine.model.UserEntity;
+import com.hankou.utils.network.HttpManager;
 import com.hankou.utils.views.AutoRecyclerItemDecoration;
 import com.hankou.utils.views.AutoRecyclerView;
 
@@ -48,6 +54,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener, 
     @Override
     public void initViews() {
         mHomePresenter.attachView(this);
+        mHomePresenter.attachResponsibility(HttpManager.getInstance().getUserApi());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.addItemDecoration(new AutoRecyclerItemDecoration(1, 20, true));
         mRecyclerView.setHasFixedSize(true);
