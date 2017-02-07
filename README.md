@@ -1,2 +1,2 @@
 # GitTest
-test git operating
+a android mvp project 
